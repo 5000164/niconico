@@ -23,7 +23,7 @@ var contents = "<html>\n<body>\n<ul>\n"
     .replace(/(.*)href=\"\/watch\/(sm.+|nm.+|\d+)\?.*?\"(.*)/gm, "$1href=\"http://www.nicovideo.jp/watch/$2\"$3")
 
     // タグをリストに変更
-    .replace(/^<h5>/gm, "<li>")
+    .replace(/^<h5>/gm, "  <li>")
     .replace(/<\/h5>$/gm, "</li>")
 
   + "</ul>\n</body>\n</html>\n";
