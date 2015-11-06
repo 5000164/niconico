@@ -19,8 +19,14 @@ var contents = "<html>\n<body>\n<ul>\n"
     // <wbr> タグが含まれている場合があるので削除
     .replace(/<wbr>/gm, "")
 
+    // 不要な属性を削除する
+    .replace(/(.*) data-href=\".*?\"(.*)/gm, "$1$2")
+
     // 動画へのリンクについているパラメータを除去
-    .replace(/(.*)href=\"\/watch\/(sm.+|nm.+|\d+)\?.*?\"(.*)/gm, "$1href=\"http://www.nicovideo.jp/watch/$2\"$3")
+    .replace(/(.*)(href=\".*?)\?.*?(\".*)/gm, "$1$2$3")
+
+    // 動画へのリンクを相対パスから絶対パスに変換
+    .replace(/(.*href=\")\/watch\/(sm.+|nm.+|\d+)(\".*)/gm, "$1http://www.nicovideo.jp/watch/$2$3")
 
     // タグをリストに変更
     .replace(/^<h5>/gm, "  <li>")
