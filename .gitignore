@@ -1,3 +1,8 @@
+# Auto generated
+*.min.js
+*.bookmarklet.js
+
+
 # Reference: https://github.com/github/gitignore/blob/cdab24d9e98bbb78da9002a57b348d749e46c76b/Node.gitignore
 
 # Logs
