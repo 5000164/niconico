@@ -1,37 +1,17 @@
-function o(s) {
-    var d = window.open().document;
-    d.writeln("<textarea rows=60 cols=80>" + s + "</textarea>");
-    d.close();
-}
+(() => {
+  const getSongs = (html) => html
+    .replace(/^(?!.*id="SYS_page_items").*$/gm, "") // 動画を含んでいる行だけ取り出す
+    .replace(/class="SYS_box_item MylistItem"/g, "\n") // 動画ごとに行を分ける
+    .replace(/<wbr>/gm, "") // wbt タグが邪魔になるので取り除く
+    .replace(/.*<h5.*?href="\/watch\/(.*?)".*?>(.*?)<.*/g, "$1,$2") // 動画のタイトルとリンクを取り出す
+    .replace(/.*ul.*/g, "") // 必要ない行を削除する
+    .replace(/^[\n\r]/gm, "") // 空行を削除する
+    .split("\n")
+    .filter(v => v.length > 0)
+    .map(v => v.split(","))
 
-var contents = "<html>\n<body>\n<ul>\n"
-    + document.body.innerHTML
-
-        // 動画へのリンクがある行だけ残す
-        .replace(/^(?!.*\/watch\/(sm.+|nm.+|\d+)).*$/gm, "")
-
-        // 連続再生ボタンの行を削除
-        .replace(/^.*id=\"BTN_playlist_play_all\".*$/gm, "")
-
-        // 不要な改行を削除
-        .replace(/^[\n\r]/gm, "")
-
-        // <wbr> タグが含まれている場合があるので削除
-        .replace(/<wbr>/gm, "")
-
-        // 不要な属性を削除する
-        .replace(/(.*) data-href=\".*?\"(.*)/gm, "$1$2")
-
-        // 動画へのリンクについているパラメータを除去
-        .replace(/(.*)(href=\".*?)\?.*?(\".*)/gm, "$1$2$3")
-
-        // 動画へのリンクを相対パスから絶対パスに変換
-        .replace(/(.*href=\")\/watch\/(sm.+|nm.+|\d+)(\".*)/gm, "$1http://www.nicovideo.jp/watch/$2$3")
-
-        // タグをリストに変更
-        .replace(/^<h5>/gm, "  <li>")
-        .replace(/<\/h5>$/gm, "</li>")
-
-    + "</ul>\n</body>\n</html>\n";
-
-o(contents);
+  const songs = getSongs(document.body.innerHTML).map(v => `<li><a href="http://www.nicovideo.jp/watch/${v[0]}">${v[1]}</a></li>`).join("\n")
+  const d = window.open().document
+  d.writeln(`<textarea rows=60 cols=80><html>\n<body>\n<ul>\n${songs}\n</ul>\n</body>\n</html>\n</textarea>`)
+  d.close()
+})()
