@@ -1,0 +1,7 @@
+{
+  "name": "niconico",
+  "version": "1.0.0",
+  "devDependencies": {
+    "prettier": "1.17.1"
+  }
+}
